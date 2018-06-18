@@ -7,4 +7,5 @@ target 'project1' do
 
   # Pods for project1
   pod 'SnapKit'
+  pod 'JSQMessagesViewController'
 end
