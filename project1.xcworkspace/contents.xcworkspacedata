@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MessageHistory+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MessageHistory+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:project1.xcodeproj">
    </FileRef>
    <FileRef

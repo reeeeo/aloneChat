@@ -1,7 +1,12 @@
 import UIKit
+import CoreData
 import JSQMessagesViewController
 
 class ViewController: JSQMessagesViewController {
+  
+  private var appDelegate: AppDelegate!
+  private var manageContext:NSManagedObjectContext!
+  private var messageHistory:NSEntityDescription!
   
   var messages: [JSQMessage] = []
   var incomingBubble: JSQMessagesBubbleImage!
@@ -22,6 +27,29 @@ class ViewController: JSQMessagesViewController {
     let bubbleFactory = JSQMessagesBubbleImageFactory()
     self.incomingBubble = bubbleFactory?.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     self.outgoingBubble = bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+    
+    prepareCoreData()
+    loadHistory()
+  }
+  
+  private func prepareCoreData() {
+    appDelegate = UIApplication.shared.delegate as! AppDelegate
+    manageContext = appDelegate.persistentContainer.viewContext
+    messageHistory = NSEntityDescription.entity(forEntityName: "MessageHistory", in: manageContext)
+  }
+  
+  private func loadHistory() {
+    let fetchRequest: NSFetchRequest<MessageHistory> = MessageHistory.fetchRequest()
+    do {
+      let results = try manageContext.fetch(fetchRequest)
+      let history = results
+        .map { JSQMessage(senderId: $0.senderId, displayName: $0.senderDisplayName, text: $0.text) }
+        .map { $0! }
+      messages = history
+    } catch {
+      // TODO: 例外処理
+      print(error)
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +80,20 @@ class ViewController: JSQMessagesViewController {
   private func addMessage(withId id: String, name: String, text: String) {
     if let message = JSQMessage(senderId: id, displayName: name, text: text) {
       self.messages.append(message)
+      addMessageHistory(with: message)
+    }
+  }
+  
+  private func addMessageHistory(with message: JSQMessage) {
+    let newRecord = NSManagedObject(entity: messageHistory!, insertInto: manageContext) as? MessageHistory
+    newRecord?.setValue(message.senderId, forKey: "senderId")
+    newRecord?.setValue(message.senderDisplayName, forKey: "senderDisplayName")
+    newRecord?.setValue(message.text, forKey: "text")
+    do {
+      try manageContext.save()
+    } catch {
+      // TODO: 例外処理
+      print(error)
     }
   }
   
