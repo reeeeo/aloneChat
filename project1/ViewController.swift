@@ -8,12 +8,12 @@ class ViewController: JSQMessagesViewController {
   private var manageContext:NSManagedObjectContext!
   private var messageHistory:NSEntityDescription!
   
-  var messages: [JSQMessage] = []
-  var incomingBubble: JSQMessagesBubbleImage!
-  var outgoingBubble: JSQMessagesBubbleImage!
-  var incomingAvatar: JSQMessagesAvatarImage!
-  var outgoingAvatar: JSQMessagesAvatarImage!
-  var nowUserId: String! = "user1"
+  private var messages: [JSQMessage] = []
+  private var incomingBubble: JSQMessagesBubbleImage!
+  private var outgoingBubble: JSQMessagesBubbleImage!
+  private var incomingAvatar: JSQMessagesAvatarImage!
+  private var outgoingAvatar: JSQMessagesAvatarImage!
+  private var nowUserId: String! = "user1"
   
   override func viewDidLoad() {
     super.viewDidLoad()
