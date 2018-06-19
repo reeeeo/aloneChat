@@ -5,7 +5,6 @@ import JSQMessagesViewController
 class ViewController: JSQMessagesViewController {
   
   private var messageHistory: CDMessageHistory?
-  
   private var messages: [JSQMessage] = []
   private var incomingBubble: JSQMessagesBubbleImage!
   private var outgoingBubble: JSQMessagesBubbleImage!
@@ -37,10 +36,6 @@ class ViewController: JSQMessagesViewController {
     self.inputToolbar.contentView.rightBarButtonItem.isEnabled = true
   }
   
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-  }
-  
   override func textViewDidChange(_ textView: UITextView) {
     self.inputToolbar.contentView.rightBarButtonItem.setTitle(self.inputToolbar.contentView.textView.hasText() ? "Send" : "⇔", for: UIControlState.normal)
   }
@@ -69,8 +64,7 @@ class ViewController: JSQMessagesViewController {
   }
   
   override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
-    let message = self.messages[indexPath.item]
-    if message.senderId == self.senderId {
+    if self.messages[indexPath.item].senderId == self.senderId {
       return self.outgoingBubble
     }
     return self.incomingBubble
@@ -85,6 +79,6 @@ class ViewController: JSQMessagesViewController {
   }
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return messages.count
+    return self.messages.count
   }
 }
