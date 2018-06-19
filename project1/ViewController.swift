@@ -27,7 +27,8 @@ class ViewController: JSQMessagesViewController {
     self.outgoingBubble = bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
     
     messageHistory = CDMessageHistory.messageHistory
-    messages = (messageHistory?.load().map { JSQMessage(senderId: $0.senderId, displayName: $0.senderDisplayName, text: $0.text) }
+    messages = (messageHistory?.load()
+      .map { JSQMessage(senderId: $0.senderId, displayName: $0.senderDisplayName, text: $0.text) }
       .map { $0! })!
   }
   
